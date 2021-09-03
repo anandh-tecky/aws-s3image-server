@@ -33,7 +33,7 @@ public class UserProfileService {
 		return userProfileDataAccessService.getUserProfiles();
 	}
 
-	public void uloadUserProfileImage(UUID userProfileId, MultipartFile file) {
+	public List<UserProfile> uloadUserProfileImage(UUID userProfileId, MultipartFile file) {
 		//1.check if file is not empty
 		isFileEmpty(file);
 		//2.if file is image
@@ -52,6 +52,7 @@ public class UserProfileService {
 		try {
 			fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
 			user.setUserProfileImageLink(filename);
+			return getUserProfiles();
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
@@ -64,10 +65,26 @@ public class UserProfileService {
 		UserProfile user=getUserProfileOrThrow(userProfileId);
 		String path=String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(),
 				user.getUserProfileId());
+		String noimagepath=String.format("%s", BucketName.PROFILE_IMAGE.getBucketName());
+		String noimagekey="noimage";
 		return user.getUserProfileImageLink()
 			.map(key->fileStore.download(path,key))
-			.orElse(new byte[0]);
+			.orElse(fileStore.download(noimagepath,noimagekey));
 	}
+	public byte[] downloadUserProfileImgWithLink(UUID userProfileId, String userProfileImgLink) {
+		
+		UserProfile user = getUserProfileOrThrow(userProfileId);
+				
+		String path=String.format("%s/%s", BucketName.PROFILE_IMAGE.getBucketName(),
+				user.getUserProfileId());
+		String noimagepath=String.format("%s", BucketName.PROFILE_IMAGE.getBucketName());
+		String noimagekey="noimage";
+				
+				return user.getUserProfileImageLink().
+						map(key -> fileStore.download(path, key))
+						.orElse(fileStore.download(noimagepath,noimagekey));
+				
+			}
 
 	private UserProfile getUserProfileOrThrow(UUID userProfileId) {
 		return userProfileDataAccessService

@@ -1,6 +1,7 @@
 package com.tecky.awsimageupload.bucket;
 
 public enum BucketName {
+	
 
 	PROFILE_IMAGE("tecky-image-upload");
 

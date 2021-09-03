@@ -36,12 +36,10 @@ public class UserProfileController {
 			path="{userProfileId}/image/upload",
 			consumes=org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE,
 			produces =org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-	public void uploadUserProfileImage(@PathVariable("userProfileId")UUID userProfileId
+	public List<UserProfile> uploadUserProfileImage(@PathVariable("userProfileId")UUID userProfileId
 			,@RequestParam("file") MultipartFile file)
 	{
-		System.out.println("Received UserId:"+userProfileId);
-		System.out.println("Received FileName:"+file.getOriginalFilename());
-		userProfileService.uloadUserProfileImage(userProfileId,file);
+		return userProfileService.uloadUserProfileImage(userProfileId,file);
 	}
 	
 	@GetMapping(
@@ -49,5 +47,12 @@ public class UserProfileController {
 	public byte[] downloadUserProfileImage(@PathVariable("userProfileId")UUID userProfileId)
 	{
 		return userProfileService.downloadUserProfileImage(userProfileId);
+	}
+	@GetMapping("{userProfileId}/{userProfileImgLink}/download")
+	public byte[] downloadUserProfileImgWithLink(@PathVariable("userProfileId") UUID userProfileId, @PathVariable("userProfileImgLink") String userProfileImgLink) {
+	
+		return userProfileService.downloadUserProfileImgWithLink(userProfileId, userProfileImgLink);
+		
+
 	}
 }
