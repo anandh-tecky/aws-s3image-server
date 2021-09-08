@@ -15,8 +15,8 @@ Steps:
 -Deploy the code and use postman or API platform of your choice.
 
 
-you can use our react client app also:
-https://github.com/anandh-tecky/awss3reactclient
+You can use our react client app also:
+> https://github.com/anandh-tecky/awss3reactclient
 
 
 Happy Coding....!
