@@ -12,4 +12,4 @@ Steps:
 you can use our react client app also:
 https://github.com/anandh-tecky/awss3reactclient
 
-Happy Coding...!
+Happy Coding....!
